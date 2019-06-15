@@ -4,13 +4,14 @@ import EntityList from './components/EntityList'
 import HomeComponent from './components/HomeComponent'
 import {BrowserRouter as Router, Route, Switch, Redirect, NavLink} from "react-router-dom"
 import './App.css';
+import Productos from './components/Productos';
 
 function ClientesComponent() {
   return (<EntityList entity="clientes"/>)
 }
 
 function ProductosComponent()  {
-  return (<EntityList entity="productos"/>)
+  return (<Productos/>)
 }
 
 
@@ -19,6 +20,7 @@ function App() {
     <div className="App">
     <Router>
       <header className="App-header">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
       <img src={logo} className="App-logo" alt="logo" />
         <ul>
           <li><NavLink to="/">Home</NavLink></li>
