@@ -1,13 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
-import EntityList from './components/EntityList'
 import HomeComponent from './components/HomeComponent'
 import {BrowserRouter as Router, Route, Switch, Redirect, NavLink} from "react-router-dom"
 import './App.css';
 import Productos from './components/Productos';
+import Clientes from './components/Clientes';
 
 function ClientesComponent() {
-  return (<EntityList entity="clientes"/>)
+  return (<Clientes/>)
 }
 
 function ProductosComponent()  {
