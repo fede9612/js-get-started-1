@@ -4,19 +4,47 @@ import Button from '@material-ui/core/Button';
 class Productos extends React.Component {
   constructor(props) {
     super(props);
-    this.state= { clientes: []}
+    this.state= { clientes: [], nombre: '', direccion: ''}    
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.cargarCliente = this.cargarCliente.bind(this);
+  }
+    
+  estadoInicial() {
+    return {nombre: '', direccion: ''};
+  }
+    
+  handleInputChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+    
+  componentWillMount() {
+    this.actualizarLista();
   }
 
-  componentWillMount() {
+  actualizarLista(){
     fetch(`http://localhost:8888/clientes`)
       .then( res => res.json())
       .then( cls => this.setState({clientes: cls}));
   }
 
-
     render() {
+      const formulario = 
+      <form>
+      Ingrese nombre del cliente:
+      <input type="text" name="nombre" size="50" id="nombre"
+             value={this.state.nombre} onChange={this.handleInputChange}/>
+      <br/>
+      Ingrese la direccion del cliente:
+      <input type="text" name="direccion" size="10" id="direccion"
+             value={this.state.direccion} onChange={this.handleInputChange}/>
+      <br/>
+      <Button variant="contained" color="primary" onClick={this.cargarCliente}>
+         Aceptar
+      </Button>
+      </form>
 
-      
       if( this.state.clientes.length > 0 ) {
         return(
           <div className="clientesCSS">
@@ -33,17 +61,7 @@ class Productos extends React.Component {
               {this.renderRows()}
             </tbody>
           </table>
-          <form method="post" action="http://localhost:8888/clientes">
-            Ingrese nombre del cliente:
-            <input type="text" name="nombre" size="50" id="nombre"/>
-            <br/>
-            Ingrese la direccion del cliente:
-            <input type="text" name="direccion" size="10" id="direccion"/>
-            <br/>
-            <Button variant="contained" color="primary" >
-               Aceptar
-            </Button>
-            </form>
+          {formulario}
         </div>)
       }
       else {
@@ -51,7 +69,8 @@ class Productos extends React.Component {
           <div className="clientesCSS">
               <h2>{this.props.titulo}</h2>
               CARGANDO
-          </div>);  
+              {formulario}
+          </div> );  
       }
 
     }
@@ -67,9 +86,9 @@ class Productos extends React.Component {
       })
     }
 
-    cargarCliente(){
-      var cliente = {"nombre":document.getElementById("nombre").value,
-                    "direccion":document.getElementById("direccion").value}
+    cargarCliente(){      
+      var cliente = {nombre:this.state.nombre,
+                    direccion:this.state.direccion}
       console.log(JSON.stringify(cliente))
       fetch(`http://localhost:8888/clientes`, {
         method: 'POST', // or 'PUT'
@@ -77,9 +96,9 @@ class Productos extends React.Component {
         headers:{
           'Content-Type': 'application/json'
         }
-      }).then(res => res.json())
-      .catch(error => console.error('Error:', error))
-      .then(response => console.log('Success:', response));
+      })
+      .then(() => this.setState(this.estadoInicial()))
+      .then(() => this.actualizarLista())
     }
   
   }
