@@ -81,6 +81,11 @@ class Productos extends React.Component {
           <tr key={unCliente._id}>
               <td>{unCliente.nombre}</td>
               <td>{unCliente.direccion}</td>
+              <td>
+                <Button variant="contained" color="primary" onClick={() => this.eliminarCliente(unCliente._id)}>
+                 Eliminar
+                </Button>
+              </td>
           </tr>
         );
       })
@@ -98,6 +103,16 @@ class Productos extends React.Component {
         }
       })
       .then(() => this.setState(this.estadoInicial()))
+      .then(() => this.actualizarLista())
+    }
+
+    eliminarCliente(idCliente){
+      fetch(`http://localhost:8888/clientes/${idCliente}`, {
+        method: 'DELETE', // or 'PUT'
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
       .then(() => this.actualizarLista())
     }
   
